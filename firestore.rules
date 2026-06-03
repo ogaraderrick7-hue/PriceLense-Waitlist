@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net
+    match /{document=**} { 
+      allow read, write: if false; 
+    }
+
+    // Primitive Definition
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    function incoming() { return request.resource.data; }
+    
+    // Validation Blueprints
+    function isValidWaitlistEntry(data) {
+      return data.keys().hasAll(['email', 'createdAt']) && 
+             data.keys().size() == 2 &&
+             data.email is string && 
+             data.email.size() >= 3 && 
+             data.email.size() <= 150 &&
+             data.email.matches('^[^@]+@[^@]+\\.[a-zA-Z0-9]+$');
+    }
+
+    match /waitlist/{entryId} {
+      // Allow anyone to submit an email to the waitlist (public form)
+      allow create: if isValidId(entryId) && 
+                       isValidWaitlistEntry(incoming()) && 
+                       incoming().createdAt == request.time;
+                       
+      // Explicitly denying reading/updating/deleting the waitlist from the client
+      allow read, update, delete: if false;
+    }
+  }
+}
