@@ -1,10 +1,4 @@
 {
   "projectId": "storedatamatch",
-  "appId": "1:219112466503:web:3df2a9205c35b678f02962",
-  "apiKey": "AIzaSyBS12TeB_-bgy8LzXeqnUQCIKGYJq7sRMs",
-  "authDomain": "storedatamatch.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-88202a26-013c-4a13-86cd-6fe28d36035d",
-  "storageBucket": "storedatamatch.firebasestorage.app",
-  "messagingSenderId": "219112466503",
-  "measurementId": "G-4744E2XT6Z"
+  "firestoreDatabaseId": "(default)"
 }
